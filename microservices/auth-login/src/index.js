@@ -1,17 +1,27 @@
-require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
+require("dotenv").config();
+const dotenv = require("dotenv");
 const authRoutes = require("./routes/authRoutes");
 
-const app = express();
-app.use(express.json());
-app.use("/api/auth", authRoutes);
+dotenv.config();
 
-mongoose.connect(process.env.MONGODB_URI)
+
+
+const app = express();
+const PORT = process.env.PORT || 3001;
+
+// Middlewares
+app.use(express.json()); // <-- Importante para leer JSON en POST
+
+// Rutas
+app.use("/api", authRoutes); // <-- Aquí montamos /api/login
+
+// Conexión a MongoDB
+mongoose
+  .connect(process.env.MONGO_URI)
   .then(() => {
     console.log("✅ Conectado a MongoDB");
-    app.listen(process.env.PORT, () => {
-      console.log(`🚀 Servidor corriendo en puerto ${process.env.PORT}`);
-    });
+    app.listen(PORT, () => console.log(`🚀 Servidor corriendo en puerto ${PORT}`));
   })
-  .catch((err) => console.error("❌ Error conectando a MongoDB:", err));
+  .catch((err) => console.error("❌ Error de conexión a MongoDB:", err));
