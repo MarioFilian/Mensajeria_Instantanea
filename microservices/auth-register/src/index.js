@@ -3,6 +3,8 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import registerRoutes from './routes/registerRoutes.js';
 import { connectDB } from './config/db.js';
+dotenv.config();
+
 
 dotenv.config();
 
